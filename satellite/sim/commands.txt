@@ -1,0 +1,6 @@
+# Asteria-1 command script
+nominal
+science
+downlink
+stop_payload
+safe

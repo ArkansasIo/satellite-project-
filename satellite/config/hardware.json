@@ -1,0 +1,22 @@
+{
+  "computer": {
+    "target": "raspberry-pi-6-concept",
+    "cpu": "arm64-multicore-concept",
+    "gpu": "firmware-mailbox-concept",
+    "ram": "4-slot-ddr6-fictional-profile"
+  },
+  "storage": {
+    "hdd": "simulated-sata",
+    "ssd": "simulated-nvme",
+    "m3": "fictional-expansion-slot"
+  },
+  "firmware": {
+    "bios_equivalent": "raspberry-pi-style-boot-firmware",
+    "cmos_equivalent": "future-settings-block"
+  },
+  "spacecraft_bus": {
+    "power": "simulated-solar-and-battery",
+    "thermal": "simulated-passive-control",
+    "attitude": "simulated-detumble-and-lock"
+  }
+}

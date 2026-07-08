@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asteria-1 Ground Station</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <h1>Asteria-1 Ground Station</h1>
+            <p id="subtitle">Waiting for telemetry</p>
+        </div>
+        <div class="status" id="overallHealth">UNKNOWN</div>
+    </header>
+
+    <main class="layout">
+        <section class="panel telemetry">
+            <div class="panelHeader">
+                <h2>Telemetry</h2>
+                <button id="refreshButton" type="button">Refresh</button>
+            </div>
+            <div class="grid">
+                <div class="metric"><span>Mode</span><strong id="mode">-</strong></div>
+                <div class="metric"><span>Tick</span><strong id="tick">-</strong></div>
+                <div class="metric"><span>Battery</span><strong id="battery">-</strong></div>
+                <div class="metric"><span>Temperature</span><strong id="temp">-</strong></div>
+                <div class="metric"><span>Solar</span><strong id="solar">-</strong></div>
+                <div class="metric"><span>Attitude</span><strong id="attitude">-</strong></div>
+                <div class="metric"><span>Payload</span><strong id="payload">-</strong></div>
+                <div class="metric"><span>Downlink</span><strong id="downlink">-</strong></div>
+                <div class="metric"><span>Packets</span><strong id="packets">-</strong></div>
+                <div class="metric"><span>Frames Sent</span><strong id="frames">-</strong></div>
+                <div class="metric"><span>Radiation</span><strong id="radiation">-</strong></div>
+                <div class="metric"><span>Rejected</span><strong id="rejected">-</strong></div>
+            </div>
+        </section>
+
+        <section class="panel controls">
+            <h2>Commands</h2>
+            <div class="commandGrid">
+                <button data-command="nominal" type="button">Nominal</button>
+                <button data-command="science" type="button">Science</button>
+                <button data-command="downlink" type="button">Downlink</button>
+                <button data-command="stop_payload" type="button">Stop Payload</button>
+                <button data-command="safe" type="button">Safe</button>
+                <button data-command="step" type="button">Step</button>
+            </div>
+            <form id="customCommand">
+                <input id="commandInput" name="command" placeholder="custom command" autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+            <button id="resetButton" class="danger" type="button">Reset Simulation</button>
+        </section>
+
+        <section class="panel health">
+            <h2>Health</h2>
+            <div class="healthRows">
+                <div><span>Power</span><strong id="healthPower">-</strong></div>
+                <div><span>Thermal</span><strong id="healthThermal">-</strong></div>
+                <div><span>Attitude</span><strong id="healthAttitude">-</strong></div>
+                <div><span>Storage</span><strong id="healthStorage">-</strong></div>
+            </div>
+        </section>
+
+        <section class="panel events">
+            <h2>Event Log</h2>
+            <div id="events"></div>
+        </section>
+    </main>
+
+    <script src="/app.js"></script>
+</body>
+</html>

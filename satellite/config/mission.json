@@ -1,0 +1,18 @@
+{
+  "name": "Asteria-1",
+  "callsign": "AST1",
+  "orbit": "simulated-low-earth-orbit",
+  "software_version": "0.1.0",
+  "safe_mode": {
+    "minimum_battery_percent": 25,
+    "maximum_bus_temperature_c": 45
+  },
+  "payload": {
+    "type": "simulated-imaging-and-radiation-package",
+    "packets_per_tick": 3
+  },
+  "communications": {
+    "primary_link": "simulated-uhf",
+    "packets_downlinked_per_tick": 2
+  }
+}

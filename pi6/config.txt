@@ -1,0 +1,7 @@
+# Raspberry Pi-style firmware config for the concept ARM64 target.
+# Copy this beside kernel8.img on the FAT boot partition.
+
+arm_64bit=1
+kernel=kernel8.img
+enable_uart=1
+disable_commandline_tags=1

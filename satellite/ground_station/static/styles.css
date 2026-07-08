@@ -1,0 +1,220 @@
+:root {
+    color-scheme: dark;
+    --bg: #101417;
+    --panel: #182024;
+    --panel-2: #202a2f;
+    --text: #ecf2f0;
+    --muted: #a9b8b4;
+    --line: #334247;
+    --ok: #49c47f;
+    --warn: #f1c453;
+    --critical: #f46d6d;
+    --accent: #7cc7d8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    background: #12191d;
+}
+
+h1, h2, p {
+    margin: 0;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 650;
+}
+
+h2 {
+    font-size: 16px;
+    font-weight: 650;
+}
+
+#subtitle {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.status {
+    min-width: 112px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    text-align: center;
+    font-weight: 700;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 14px;
+    padding: 14px;
+}
+
+.panel {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 14px;
+}
+
+.panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.metric {
+    min-height: 74px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+}
+
+.metric span,
+.healthRows span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.metric strong {
+    font-size: 20px;
+}
+
+button,
+input {
+    min-height: 38px;
+    border: 1px solid var(--line);
+    background: #223036;
+    color: var(--text);
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: var(--accent);
+}
+
+input {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.commandGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+#customCommand {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 82px;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.danger {
+    width: 100%;
+    margin-top: 10px;
+    border-color: #704141;
+    background: #3a2528;
+}
+
+.healthRows {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.healthRows div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+}
+
+.events {
+    grid-column: 1 / -1;
+}
+
+#events {
+    display: grid;
+    gap: 6px;
+    margin-top: 12px;
+    max-height: 300px;
+    overflow: auto;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+}
+
+.event {
+    display: grid;
+    grid-template-columns: 72px 72px 110px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    background: #131b1f;
+}
+
+.OK { color: var(--ok); }
+.WARN { color: var(--warn); }
+.CRITICAL, .ERROR { color: var(--critical); }
+.INFO { color: var(--accent); }
+
+@media (max-width: 880px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .grid,
+    .commandGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .event {
+        grid-template-columns: 1fr;
+    }
+}

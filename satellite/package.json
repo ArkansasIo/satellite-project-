@@ -1,0 +1,13 @@
+{
+  "name": "asteria-satellite-ground-station",
+  "version": "0.2.0",
+  "private": true,
+  "description": "No-dependency satellite simulation, REST API, and browser ground-station UI.",
+  "scripts": {
+    "start": "node ground_station_node/server.js",
+    "test": "node ground_station_node/test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
