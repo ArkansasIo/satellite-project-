@@ -19,7 +19,10 @@
         <section class="panel telemetry">
             <div class="panelHeader">
                 <h2>Telemetry</h2>
-                <button id="refreshButton" type="button">Refresh</button>
+                <div class="toolbar">
+                    <button id="refreshButton" type="button">Refresh</button>
+                    <label class="toggle"><input id="autoRefresh" type="checkbox" checked> Auto</label>
+                </div>
             </div>
             <div class="grid">
                 <div class="metric"><span>Mode</span><strong id="mode">-</strong></div>
@@ -44,14 +47,26 @@
                 <button data-command="science" type="button">Science</button>
                 <button data-command="downlink" type="button">Downlink</button>
                 <button data-command="stop_payload" type="button">Stop Payload</button>
-                <button data-command="safe" type="button">Safe</button>
+                <button data-command="safe" class="warning" type="button">Safe</button>
                 <button data-command="step" type="button">Step</button>
+                <button data-command="reset" class="danger" type="button">Reset</button>
             </div>
             <form id="customCommand">
                 <input id="commandInput" name="command" placeholder="custom command" autocomplete="off">
                 <button type="submit">Send</button>
             </form>
-            <button id="resetButton" class="danger" type="button">Reset Simulation</button>
+            <pre id="commandResponse" class="responseBox">{}</pre>
+        </section>
+
+        <section class="panel scriptPanel">
+            <div class="panelHeader">
+                <h2>Command Script</h2>
+                <button id="runScriptButton" type="button">Run Script</button>
+            </div>
+            <textarea id="scriptInput" spellcheck="false">nominal
+science
+step
+downlink</textarea>
         </section>
 
         <section class="panel health">
@@ -65,7 +80,10 @@
         </section>
 
         <section class="panel events">
-            <h2>Event Log</h2>
+            <div class="panelHeader">
+                <h2>Event Log</h2>
+                <span id="apiStatus">API: checking</span>
+            </div>
             <div id="events"></div>
         </section>
     </main>

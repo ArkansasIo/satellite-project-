@@ -62,6 +62,24 @@ async function main() {
         throw new Error("events endpoint returned no events");
     }
 
+    const status = await json("/api/status");
+    if (status.ok !== true || !status.endpoints.includes("POST /api/script")) {
+        throw new Error("status endpoint is incomplete");
+    }
+
+    const commands = await json("/api/commands");
+    if (!Array.isArray(commands.commands) || !commands.commands.some((entry) => entry.command === "safe")) {
+        throw new Error("commands catalog is incomplete");
+    }
+
+    const script = await json("/api/script", {
+        method: "POST",
+        body: JSON.stringify({ script: "nominal\nscience\nstep\ndownlink" }),
+    });
+    if (script.applied !== 4 || script.state.tick < 4) {
+        throw new Error("script endpoint failed");
+    }
+
     console.log("node ground station tests passed");
 }
 

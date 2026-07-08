@@ -34,7 +34,11 @@ Returns the recent event log.
 
 `GET /api/commands`
 
-Returns accepted command names.
+Returns accepted commands with labels, groups, and descriptions.
+
+`GET /api/status`
+
+Returns service health and endpoint metadata.
 
 `POST /api/command`
 
@@ -45,6 +49,16 @@ Request body:
 ```
 
 Applies the command, advances one mission tick, and returns the updated state.
+
+`POST /api/script`
+
+Request body:
+
+```json
+{ "script": "nominal\nscience\nstep\ndownlink" }
+```
+
+Runs each non-empty, non-comment command line and returns all command results plus final state.
 
 `POST /api/reset`
 

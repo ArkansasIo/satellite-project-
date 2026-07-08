@@ -18,6 +18,10 @@ const fields = {
     healthAttitude: document.querySelector("#healthAttitude"),
     healthStorage: document.querySelector("#healthStorage"),
     events: document.querySelector("#events"),
+    commandResponse: document.querySelector("#commandResponse"),
+    scriptInput: document.querySelector("#scriptInput"),
+    apiStatus: document.querySelector("#apiStatus"),
+    autoRefresh: document.querySelector("#autoRefresh"),
 };
 
 async function getJson(url, options = {}) {
@@ -89,12 +93,14 @@ function renderEvents(payload) {
 }
 
 async function refresh() {
-    const [state, events] = await Promise.all([
+    const [state, events, status] = await Promise.all([
         getJson("/api/state"),
         getJson("/api/events"),
+        getJson("/api/status"),
     ]);
     renderState(state);
     renderEvents(events);
+    fields.apiStatus.textContent = status.ok ? "API: online" : "API: degraded";
 }
 
 async function sendCommand(command) {
@@ -103,6 +109,28 @@ async function sendCommand(command) {
         body: JSON.stringify({ command }),
     });
     renderState(state);
+    fields.commandResponse.textContent = JSON.stringify({
+        command,
+        mode: state.mode,
+        tick: state.tick,
+        health: state.health.overall,
+        rejected: state.rejected_commands,
+    }, null, 2);
+    await refresh();
+}
+
+async function runScript() {
+    const payload = await getJson("/api/script", {
+        method: "POST",
+        body: JSON.stringify({ script: fields.scriptInput.value }),
+    });
+    renderState(payload.state);
+    fields.commandResponse.textContent = JSON.stringify({
+        script_applied: payload.applied,
+        final_mode: payload.state.mode,
+        final_tick: payload.state.tick,
+        health: payload.state.health.overall,
+    }, null, 2);
     await refresh();
 }
 
@@ -111,12 +139,6 @@ document.querySelectorAll("[data-command]").forEach((button) => {
 });
 
 document.querySelector("#refreshButton").addEventListener("click", refresh);
-
-document.querySelector("#resetButton").addEventListener("click", async () => {
-    const state = await getJson("/api/reset", { method: "POST" });
-    renderState(state);
-    await refresh();
-});
 
 document.querySelector("#customCommand").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -128,5 +150,11 @@ document.querySelector("#customCommand").addEventListener("submit", async (event
     }
 });
 
+document.querySelector("#runScriptButton").addEventListener("click", runScript);
+
 refresh();
-setInterval(refresh, 3000);
+setInterval(() => {
+    if (fields.autoRefresh.checked) {
+        refresh();
+    }
+}, 3000);

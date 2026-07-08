@@ -16,6 +16,18 @@ const validCommands = new Set([
     "step",
 ]);
 
+function commandCatalog() {
+    return [
+        { command: "nominal", label: "Nominal", group: "mode", description: "Enter normal spacecraft operations." },
+        { command: "science", label: "Science", group: "payload", description: "Start payload collection when safety allows." },
+        { command: "downlink", label: "Downlink", group: "comms", description: "Start sending stored packets." },
+        { command: "stop_payload", label: "Stop Payload", group: "payload", description: "Disable science payload collection." },
+        { command: "safe", label: "Safe Mode", group: "safety", description: "Disable payload and downlink." },
+        { command: "step", label: "Step Tick", group: "simulation", description: "Advance one simulation tick." },
+        { command: "reset", label: "Reset", group: "simulation", description: "Reset the simulation state." },
+    ];
+}
+
 function newState() {
     return {
         name: "Asteria-1",
@@ -202,6 +214,23 @@ function applyCommand(rawCommand) {
     return snapshot();
 }
 
+function runScript(rawScript) {
+    const lines = String(rawScript || "").split(/\r?\n/);
+    const results = [];
+    for (const line of lines) {
+        const command = line.trim();
+        if (!command || command.startsWith("#")) {
+            continue;
+        }
+        results.push({ command, state: applyCommand(command) });
+    }
+    return {
+        applied: results.length,
+        results,
+        state: snapshot(),
+    };
+}
+
 function sendJson(response, payload) {
     const body = JSON.stringify(payload, null, 2);
     response.writeHead(200, {
@@ -272,12 +301,35 @@ const server = http.createServer(async (request, response) => {
         return;
     }
     if (request.method === "GET" && url.pathname === "/api/commands") {
-        sendJson(response, { commands: Array.from(validCommands).sort() });
+        sendJson(response, { commands: commandCatalog() });
+        return;
+    }
+    if (request.method === "GET" && url.pathname === "/api/status") {
+        sendJson(response, {
+            service: "asteria-ground-station",
+            ok: true,
+            host,
+            port,
+            endpoints: [
+                "GET /api/status",
+                "GET /api/state",
+                "GET /api/events",
+                "GET /api/commands",
+                "POST /api/command",
+                "POST /api/script",
+                "POST /api/reset",
+            ],
+        });
         return;
     }
     if (request.method === "POST" && url.pathname === "/api/command") {
         const body = await readBody(request);
         sendJson(response, applyCommand(body.command));
+        return;
+    }
+    if (request.method === "POST" && url.pathname === "/api/script") {
+        const body = await readBody(request);
+        sendJson(response, runScript(body.script));
         return;
     }
     if (request.method === "POST" && url.pathname === "/api/reset") {
